@@ -7,9 +7,15 @@ It uses the Bevy engine's ECS, and the Macroquad crate to draw sprites, it was a
 
 In the future, I want to make my very own graphics renderer using webGPU.
 
-##Todos:
+## Instructions
+- Install Rust. It depends on your OS
+- run the project with ```cargo run```
+- Enjoy!
+
+## Todos:
 - Organize and clean code up by splitting files into submodules
 - Organize assets folder
 - Create a single HashMap for assets instead of multiple resources
 - Generate some simple documentation
-- Embed files into executable for release 
+- Embed files into executable for release
+- Build into WASM and make a page for publishing

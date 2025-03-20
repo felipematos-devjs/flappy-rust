@@ -6,7 +6,7 @@ use macroquad::prelude::*;
 use crate::asset_loader::AssetLoader;
 use crate::background::Floor;
 use crate::game::{GameState, GameStates, SCREEN_SIZE};
-use crate::pipe::{PIPES_V_SEPARATION, Pipe};
+use crate::pipe::{Pipe, PIPES_V_SEPARATION};
 use crate::player::Player;
 use crate::transform::{Position, Velocity};
 use crate::ui::{Score, UI_SPRITE_SEP, UI_SPRITE_SIZE};
@@ -90,7 +90,11 @@ pub fn draw_call(
                     (position.y).floor(),
                     WHITE,
                     DrawTextureParams {
-                        rotation: clamp(PI / 20.0 * velocity.y, -PI / 4.0, PI / 2.0),
+                        rotation: clamp(
+                            PI / 20.0 * (velocity.y * get_frame_time()),
+                            -PI / 4.0,
+                            PI / 2.0,
+                        ),
                         flip_x: false,
                         flip_y: false,
                         pivot: None,

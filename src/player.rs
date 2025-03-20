@@ -5,11 +5,11 @@ use macroquad::prelude::*;
 use crate::{
     asset_loader::AssetLoader,
     game::{GameState, GameStates, SCREEN_SIZE},
-    pipe::{PIPE_WIDTH, PIPES_V_SEPARATION, Pipe},
+    pipe::{Pipe, PIPES_V_SEPARATION, PIPE_WIDTH},
     transform::{Position, Velocity},
 };
-pub const JUMP_SPEED: f32 = 7.6;
-pub const GRAVITY: f32 = 32.0;
+pub const JUMP_SPEED: f32 = 450.0;
+pub const GRAVITY: f32 = 1900.0;
 pub const PLAYER_SPRITE_SIZES: Vec2 = Vec2 { x: 36.0, y: 36.0 };
 pub const PLAYER_COLLISION: Vec2 = Vec2 { x: 20.0, y: 20.0 };
 
@@ -49,7 +49,7 @@ pub fn move_player(
         }
         GameStates::Play => {
             for (mut position, mut velocity) in &mut query {
-                position.y += velocity.y;
+                position.y += velocity.y * get_frame_time();
 
                 if is_key_pressed(KeyCode::Space) {
                     velocity.y = -JUMP_SPEED;

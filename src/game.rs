@@ -1,6 +1,6 @@
 use crate::asset_loader::AssetLoader;
 use crate::pipe::{
-    PIPE_CEILING_PADDING, PIPE_FLOOR_PADDING, PIPES_H_SEPARATION, PIPES_V_SEPARATION, Pipe,
+    Pipe, PIPES_H_SEPARATION, PIPES_V_SEPARATION, PIPE_CEILING_PADDING, PIPE_FLOOR_PADDING,
 };
 use crate::player::Player;
 use crate::transform::{Position, Velocity};
@@ -29,7 +29,7 @@ pub fn check_inputs(mut game_state: ResMut<GameState>) {
     if is_key_pressed(KeyCode::Space) && game_state.game_state == GameStates::PressStart {
         game_state.score = 0;
         game_state.game_state = GameStates::Play;
-    } else if is_key_pressed(KeyCode::Space) && game_state.game_state == GameStates::GameOver {
+    } else if is_key_pressed(KeyCode::R) && game_state.game_state == GameStates::GameOver {
         game_state.score = 0;
         game_state.game_state = GameStates::Restart;
     }
@@ -38,14 +38,14 @@ pub fn check_inputs(mut game_state: ResMut<GameState>) {
 pub fn restart_game(
     mut game_state: ResMut<GameState>,
     mut player_query: Single<(&mut Position, &mut Velocity), (With<Player>, Without<Pipe>)>,
-    mut pipe_query: Query<(Entity, &mut Position), (With<Pipe>, Without<Player>)>,
+    mut pipe_query: Query<(Entity, &mut Position, &mut Pipe), (With<Pipe>, Without<Player>)>,
     mut assets: ResMut<AssetLoader>,
 ) {
     if game_state.is_changed() && game_state.game_state == GameStates::Restart {
         //reset pipes
         {
             let mut current_pipe = 0.0;
-            for (_entity, mut position) in &mut pipe_query {
+            for (_entity, mut position, mut pipe) in &mut pipe_query {
                 let random: f32 = macroquad::rand::gen_range(0.0, 1.0);
                 position.x = SCREEN_SIZE + current_pipe * PIPES_H_SEPARATION;
                 position.y = clamp(
@@ -54,6 +54,7 @@ pub fn restart_game(
                     -PIPES_V_SEPARATION - PIPE_FLOOR_PADDING,
                 );
                 current_pipe += 1.0;
+                pipe.can_score = true;
             }
         }
 

@@ -1,17 +1,19 @@
 use bevy_ecs::prelude::*;
+use flappy::asset_loader::initialize_assets;
 use flappy::background::{spawn_background, update_background};
-use flappy::game::{check_inputs, draw_call, initialize_resources, restart_game, SCREEN_SIZE};
+use flappy::draw::draw_call;
+use flappy::game::{SCREEN_SIZE, check_inputs, restart_game};
 use flappy::pipe::{move_pipe, spawn_pipes};
 use flappy::player::{add_gravity, collide_player, move_player, spawn_player};
 use flappy::ui::add_ui;
-use macroquad::prelude::{clear_background, next_frame, set_camera, Camera2D, Rect, SKYBLUE};
+use macroquad::prelude::{Camera2D, Rect, SKYBLUE, clear_background, next_frame, set_camera};
 use macroquad::window::request_new_screen_size;
 
 #[macroquad::main("Flappy")]
 async fn main() {
     //initialize resources such as sprites
     let mut world = World::default();
-    initialize_resources(&mut world).await;
+    initialize_assets(&mut world).await;
 
     //Startup systems. Run once
     let mut startup_schedule = Schedule::default();

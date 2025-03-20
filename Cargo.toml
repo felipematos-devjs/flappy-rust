@@ -1,0 +1,8 @@
+[package]
+name = "flappy"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bevy_ecs = "0.15.0"
+macroquad = {version = "0.4.13", features = ["audio"]}
